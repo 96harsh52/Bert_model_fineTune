@@ -1,0 +1,133 @@
+version: "3.1"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+
+ 
+
+### Email form
+- rule: Utter the email when provided by the user
+  steps:
+  - intent: inform_email
+  - action: action_validate_email
+  - action: action_email_or_sms
+#  - action: email_form
+#  - active_loop: email_form
+
+- rule: Submit email_form
+  condition: 
+  - active_loop: email_form
+  steps:
+  - action: email_form
+  - active_loop: null
+  - slot_was_set: 
+    - requested_slot: null
+  - action: utter_email
+
+### Name form
+- rule: Activate name_form
+  steps:
+  - intent: provide_names
+  - action: name_form
+  - active_loop: name_form
+
+- rule: Submit name_form
+  condition: 
+  - active_loop: name_form
+  steps:
+  - action: name_form
+  - active_loop: null
+  - slot_was_set: 
+    - requested_slot: null
+  - action: utter_name_values
+
+### Mobile number form
+- rule: Activate mobile_number_form
+  steps:
+  # - intent: inform
+  #   entities: 
+  #   - phone-number
+  - action: mobile_number_form
+  - active_loop: mobile_number_form
+
+- rule: Submit mobile_number_form
+  condition: 
+  - active_loop: mobile_number_form
+  steps:
+  - action: mobile_number_form
+  - active_loop: null
+  - slot_was_set: 
+    - requested_slot: null
+  #- action: utter_mobile_number
+
+
+# Stay form
+- rule: Activate stay_form
+  steps:
+  - intent: ask_availability
+  - action: stay_form
+  - active_loop: stay_form
+
+- rule: Submit stay_form
+  condition: 
+  - active_loop: stay_form
+  steps:
+  - action: stay_form
+  - active_loop: null
+  - slot_was_set: 
+    - requested_slot: null
+  - action: action_calculate_num_nights 
+  - action: room_type_form
+
+
+### Room type form
+- rule: Activate room_type_form
+  steps:
+  - intent: inform_room_type
+  - action: room_type_form
+  - active_loop: room_type_form
+
+- rule: Submit room_type_form
+  condition: 
+  - active_loop: room_type_form
+  steps:
+  - action: room_type_form
+  - active_loop: null
+  - slot_was_set: 
+    - requested_slot: null
+  - action: utter_num_room_types
+
+- rule: Change checkin date
+  steps:
+  - intent: change_checkin_date
+  - action: action_reset_checkin_date
+  - action: stay_form
+  - active_loop: stay_form
+
+- rule: Change checkout date
+  steps:
+  - intent: change_checkout_date
+  - action: action_reset_checkout_date
+  - action: stay_form
+  - active_loop: stay_form
+
+- rule: Change number of guests
+  steps:
+  - intent: change_num_guests
+  - action: action_reset_num_guests
+  - action: stay_form
+  - active_loop: stay_form
+
+- rule: Answer breakfast price
+  steps:
+  - intent: ask_breakfast_price
+  - action: utter_breakfast_price
