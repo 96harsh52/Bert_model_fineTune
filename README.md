@@ -1,4 +1,4 @@
-**GitHub README File for BratModel and RoBERTa Model Fine-Tuning Code**
+**BratModel and RoBERTa Model Fine-Tuning Code**
 
 **Introduction**
 
